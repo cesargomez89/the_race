@@ -4,8 +4,7 @@ ARG RAILS_MASTER_KEY
 
 WORKDIR /app
 
-ENV RAILS_ENV="development" \
-  BUNDLE_PATH="/usr/local/bundle" \
+ENV BUNDLE_PATH="/usr/local/bundle" \
   RUBY_ZJIT_ENABLE=1
 
 # libpq-dev postgresql-client # for postgres

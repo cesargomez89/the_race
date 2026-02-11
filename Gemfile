@@ -45,6 +45,8 @@ group :development, :test do
 
   # Test framework for Rails. It plays nicely with rswag for API documentation
   gem "rspec-rails", "~> 8.0.0"
+  # Generate test data for models
+  gem "factory_bot_rails"
 end
 
 group :test do
