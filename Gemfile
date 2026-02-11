@@ -28,14 +28,22 @@ gem "thruster", require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 # gem "rack-cors"
 
+# rswag dependency
 gem "ostruct"
+
+# Generate API documentation from rspec tests
 gem "rswag"
+
+# Ensure that migrations are safe to run when leaving sqlite
+# gem "strong_migrations"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "bundler-audit", require: false
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
+
+  # Test framework for Rails. It plays nicely with rswag for API documentation
   gem "rspec-rails", "~> 8.0.0"
 end
 
