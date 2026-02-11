@@ -36,6 +36,10 @@ module Api::V1
 
     private
 
+    def set_race
+      @race = Race.find(params[:id])
+    end
+
     def race_params
       params.require(:race).permit(
         :name,
