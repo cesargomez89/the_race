@@ -5,4 +5,6 @@ class Car < ApplicationRecord
 
   validates :number, :team, :driver_name, presence: true
   validates :number, uniqueness: { scope: :team }
+
+  validates :number, numericality: { only_integer: true, greater_than: 0 }
 end
