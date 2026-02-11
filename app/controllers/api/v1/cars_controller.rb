@@ -1,5 +1,7 @@
 module Api::V1
   class CarsController < ApplicationController
+    before_action :set_car, only: %i[ show update destroy ]
+
     def index
       @cars = Car.all
 
@@ -7,8 +9,6 @@ module Api::V1
     end
 
     def show
-      @car = Car.find(params[:id])
-
       render json: @car
     end
 
@@ -23,13 +23,15 @@ module Api::V1
     end
 
     def update
-      @car = Car.find(params[:id])
-
       if @car.update(car_params)
         render json: @car
       else
         render json: @car.errors, status: :unprocessable_entity
       end
+    end
+
+    def destroy
+      @car.destroy
     end
 
     private

@@ -1,5 +1,7 @@
 module Api::V1
   class RacesController < ApplicationController
+    before_action :set_race, only: %i[ show update destroy ]
+
     def index
       @races = Race.all
 
@@ -7,8 +9,6 @@ module Api::V1
     end
 
     def show
-      @race = Race.find(params[:id])
-
       render json: @race
     end
 
@@ -23,13 +23,15 @@ module Api::V1
     end
 
     def update
-      @race = Race.find(params[:id])
-
       if @race.update(race_params)
         render json: @race
       else
         render json: @race.errors, status: :unprocessable_entity
       end
+    end
+
+    def destroy
+      @race.destroy
     end
 
     private
