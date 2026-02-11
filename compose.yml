@@ -1,0 +1,16 @@
+volumes:
+  the_race_bundle_path:
+    name: the_race_bundle_path
+services:
+  the_race: &the_race
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/app
+      - the_race_bundle_path:/usr/local/bundle
+    ports:
+      - "3000:3000"
+
+    env_file: .env
+    stdin_open: true
+    tty: true
