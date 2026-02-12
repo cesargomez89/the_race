@@ -1,9 +1,10 @@
 module Api::V1
   class CarsController < ApplicationController
+    before_action :set_race
     before_action :set_car, only: %i[ show update destroy ]
 
     def index
-      @cars = Car.all
+      @cars = @race ? @race.cars : Car.all
 
       render json: @cars
     end
@@ -13,7 +14,11 @@ module Api::V1
     end
 
     def create
-      @car = Car.new(car_params)
+      @car = if @race
+               @race.cars.new(car_params)
+             else
+               Car.new(car_params)
+             end
 
       if @car.save
         render json: @car, status: :created
@@ -36,8 +41,16 @@ module Api::V1
 
     private
 
+    def set_race
+      @race = Race.find(params[:race_id]) if params[:race_id]
+    end
+
     def set_car
-      @car = Car.find(params[:id])
+      @car = if @race
+               @race.cars.find(params[:id])
+             else
+               Car.find(params[:id])
+             end
     end
 
     def car_params
