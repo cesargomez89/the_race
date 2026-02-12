@@ -5,9 +5,7 @@ module Api
 
       # GET /api/v1/race_participants
       def index
-        participants = RaceParticipant
-                    .includes(:car, :race)
-                    .order(created_at: :desc)
+        participants = RaceParticipant.order(created_at: :desc)
 
         render json: RaceParticipantBlueprint.render(participants), status: :ok
       end
