@@ -1,56 +1,39 @@
 module Api::V1
   class CarsController < ApplicationController
-    before_action :set_race
     before_action :set_car, only: %i[ show update destroy ]
 
+    # GET /cars
     def index
-      @cars = @race ? @race.cars : Car.all
-
-      render json: @cars
+      @cars = Car.all
+      render json: CarBlueprint.render(@cars)
     end
 
+    # GET /cars/:id
     def show
-      render json: @car
+      render json: CarBlueprint.render(@car)
     end
 
+    # POST /cars
     def create
-      @car = if @race
-               @race.cars.new(car_params)
-             else
-               Car.new(car_params)
-             end
-
-      if @car.save
-        render json: @car, status: :created
-      else
-        render json: @car.errors, status: :unprocessable_entity
-      end
+      car = Car.create!(car_params)
+      render json: CarBlueprint.render(car), status: :created
     end
 
+    # PATCH /cars/:id
     def update
-      if @car.update(car_params)
-        render json: @car
-      else
-        render json: @car.errors, status: :unprocessable_entity
-      end
+      @car.update!(car_params)
+      render json: CarBlueprint.render(@car)
     end
 
+    # DELETE /cars/:id
     def destroy
-      @car.destroy
+      @car.destroy!
     end
 
     private
 
-    def set_race
-      @race = Race.find(params[:race_id]) if params[:race_id]
-    end
-
     def set_car
-      @car = if @race
-               @race.cars.find(params[:id])
-             else
-               Car.find(params[:id])
-             end
+      @car = Car.find(params[:id])
     end
 
     def car_params

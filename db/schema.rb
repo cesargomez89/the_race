@@ -23,7 +23,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_11_164113) do
     t.datetime "created_at", null: false
     t.datetime "end_time", null: false
     t.integer "lap_number", null: false
-    t.integer "lap_time_ms", null: false
+    t.integer "lap_time", null: false
     t.integer "race_participant_id", null: false
     t.datetime "start_time", null: false
     t.datetime "updated_at", null: false
@@ -51,6 +51,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_11_164113) do
     t.datetime "start_time", null: false
     t.string "track_name", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_races_on_name", unique: true
   end
 
   add_foreign_key "laps", "race_participants"

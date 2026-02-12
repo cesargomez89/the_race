@@ -2,36 +2,32 @@ module Api::V1
   class RacesController < ApplicationController
     before_action :set_race, only: %i[ show update destroy ]
 
+    # GET /races
     def index
       @races = Race.all
-
-      render json: @races
+      render json: RaceBlueprint.render(@races)
     end
 
+    # GET /races/:id
     def show
-      render json: @race
+      render json: RaceBlueprint.render(@race)
     end
 
+    # POST /races
     def create
-      @race = Race.new(race_params)
-
-      if @race.save
-        render json: @race, status: :created
-      else
-        render json: @race.errors, status: :unprocessable_entity
-      end
+      race = Race.create!(race_params)
+      render json: RaceBlueprint.render(race), status: :created
     end
 
+    # PATCH /races/:id
     def update
-      if @race.update(race_params)
-        render json: @race
-      else
-        render json: @race.errors, status: :unprocessable_entity
-      end
+      @race.update!(race_params)
+      render json: RaceBlueprint.render(@race)
     end
 
+    # DELETE /races/:id
     def destroy
-      @race.destroy
+      @race.destroy!
     end
 
     private

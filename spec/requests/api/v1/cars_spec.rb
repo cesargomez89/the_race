@@ -1,9 +1,6 @@
-require 'rails_helper'
 require 'swagger_helper'
 
 RSpec.describe 'API V1 Cars', type: :request do
-  let(:json) { JSON.parse(response.body) }
-
   path '/api/v1/cars' do
     get 'List cars' do
       tags 'Cars'
@@ -15,6 +12,7 @@ RSpec.describe 'API V1 Cars', type: :request do
         schema type: :array,
           items: {
             type: :object,
+            required: %w[id number team driver_name],
             properties: {
               id: { type: :integer },
               number: { type: :number },
@@ -22,6 +20,14 @@ RSpec.describe 'API V1 Cars', type: :request do
               driver_name: { type: :string }
             }
           }
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body)
+            }
+          }
+        end
 
         run_test!
       end
@@ -49,17 +55,29 @@ RSpec.describe 'API V1 Cars', type: :request do
       }
 
       response '201', 'created' do
-        let(:car) do
-          {
-            car: attributes_for(:car)
+        let(:car) { { car: { number: 10, team: 'Ferrari', driver_name: 'John Doe' } } }
+
+        schema type: :object,
+          properties: {
+            id: { type: :integer },
+            number: { type: :number },
+            team: { type: :string },
+            driver_name: { type: :string }
+          }
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => { example: JSON.parse(response.body) }
           }
         end
 
         run_test!
       end
 
-      response '422', 'invalid request' do
+      response '422', 'validation failed' do
         let(:car) { { car: { number: nil } } }
+
+        schema '$ref' => '#/components/schemas/error'
 
         run_test!
       end
@@ -67,7 +85,7 @@ RSpec.describe 'API V1 Cars', type: :request do
   end
 
   path '/api/v1/cars/{id}' do
-    parameter name: :id, in: :path, type: :string
+    parameter name: :id, in: :path, type: :integer
 
     get 'Show car' do
       tags 'Cars'
@@ -82,8 +100,24 @@ RSpec.describe 'API V1 Cars', type: :request do
             id: { type: :integer },
             number: { type: :number },
             team: { type: :string },
-            driver_name: { type: :string }
+            driver_name: { type: :string },
+            created_at: { type: :string, format: :'date-time' },
+            updated_at: { type: :string, format: :'date-time' }
           }
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => { example: JSON.parse(response.body) }
+          }
+        end
+
+        run_test!
+      end
+
+      response '404', 'not found' do
+        let(:id) { 999999 }
+
+        schema '$ref' => '#/components/schemas/error'
 
         run_test!
       end

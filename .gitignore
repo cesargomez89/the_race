@@ -33,3 +33,4 @@
 
 # ignore simplecov
 /coverage
+/swagger

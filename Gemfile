@@ -31,6 +31,9 @@ gem "thruster", require: false
 # rswag dependency
 gem "ostruct"
 
+# JSON serialization
+gem "blueprinter"
+
 # Generate API documentation from rspec tests
 gem "rswag"
 

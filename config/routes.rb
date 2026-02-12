@@ -12,13 +12,14 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :races do
-        resources :cars do
-          resources :laps
-        end
+      resources :cars # <- allow create
+      resources :races
+
+      resources :race_participants  do
+        resources :laps, only: [ :index, :create ]
       end
 
-      resources :cars
+      resources :laps, only: [ :show, :update, :destroy ]
     end
   end
 end

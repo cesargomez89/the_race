@@ -5,7 +5,7 @@ class CreateLaps < ActiveRecord::Migration[8.1]
       t.integer :lap_number, null: false
       t.datetime :start_time, null: false
       t.datetime :end_time, null: false
-      t.integer :lap_time_ms, null: false
+      t.integer :lap_time, null: false
 
       t.timestamps
     end

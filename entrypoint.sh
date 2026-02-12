@@ -6,6 +6,8 @@ rm -f /app/tmp/pids/server.pid
 bundle check || bundle install --jobs 4 --retry 5
 bundle exec rails db:create db:migrate db:seed
 
+bundle exec rake rswag:specs:swaggerize
+
 
 # Then exec the container's main process (what's set as CMD in the Dockerfile).
 exec "$@"

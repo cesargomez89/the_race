@@ -22,12 +22,38 @@ RSpec.configure do |config|
         version: 'v1'
       },
       paths: {},
+      components: {
+        schemas: {
+          error: {
+            type: :object,
+            properties: {
+              error: {
+                type: :object,
+                properties: {
+                  code: { type: :string },
+                  message: { type: :string },
+                  details: {
+                    type: :object,
+                    additionalProperties: {
+                      type: :array,
+                      items: { type: :string }
+                    },
+                    nullable: true
+                  }
+                },
+                required: %w[code message]
+              }
+            },
+            required: [ 'error' ]
+          }
+        }
+      },
       servers: [
         {
-          url: 'https://{defaultHost}',
+          url: 'http://{defaultHost}',
           variables: {
             defaultHost: {
-              default: 'www.example.com'
+              default: 'localhost:3000'
             }
           }
         }
@@ -40,4 +66,4 @@ RSpec.configure do |config|
   # the key, this may want to be changed to avoid putting yaml in json files.
   # Defaults to json. Accepts ':json' and ':yaml'.
   config.openapi_format = :yaml
-end
+  end
