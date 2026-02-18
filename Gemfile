@@ -47,7 +47,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   # Test framework for Rails. It plays nicely with rswag for API documentation
-  gem "rspec-rails", "~> 8.0.0"
+  gem "rspec-rails", "~> 8.0.3"
   # Generate test data for models
   gem "factory_bot_rails"
 end
